@@ -1,8 +1,7 @@
 {
-  "name": "05-github-explorer",
-  "version": "0.1.0",
-  "private": true,
-  "proxy": "http://l4465-tmn.hci.eu1.hana.ondemand.com",
+  "name": "SCPI-Connection-Viewer",
+  "version": "0.1.0",  
+  "private": true,   
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -25,7 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject", 
+    "local-proxy": "lcp --proxyUrl https://l4465-tmn.hci.eu1.hana.ondemand.com"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5",
-    "@types/styled-components": "^5.1.3"
+    "@types/styled-components": "^5.1.3",
+    "local-cors-proxy": "^1.0.2"
   }
 }

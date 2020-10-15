@@ -8,17 +8,10 @@ import { Form, Error, Table } from "./styles";
 
 import "./styles.css";
 
-interface Repository {
-  full_name: string;
-  description: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-}
-
 const Dashboard: React.FC = () => {
-  const [hostName, setHostName] = useState("");
+  const [hostName, setHostName] = useState(
+    "l4465-tmn.hci.eu1.hana.ondemand.com"
+  );
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
 
@@ -53,29 +46,27 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    const api = axios.create({
-      baseURL: `https://${hostName}`,
-    });
-
     try {
       const token = Buffer.from(`${user}:${pass}`, "utf8").toString("base64");
 
-      console.log("[TOKEN]", token);
-      const response = await api.get(
-        `/api/v1/IntegrationConnections?$expand=IntegrationFlows&$filter=ResolvedConnection eq true&$inlinecount=allpages&$format=json`,
-        {
-          headers: {
-            Authorization: `Basic ${token}`,
-            "Access-Control-Allow-Origin": "*",
-            "Host": hostName
-          },  
-        }
+      var myHeaders = new Headers();
+
+      myHeaders.append("Authorization", `Basic ${token}`);
+      myHeaders.append("Content-Type", "application/json");
+
+      axios.defaults.headers.common["Authorization"] = `Basic ${token}`;
+      axios.defaults.headers.common["InvalidateCache"] = true;
+      axios.defaults.headers.post["Content-Type"] = "application/json";
+
+      const response = await axios(
+        `http://localhost:8010/proxy/api/v1/IntegrationConnections?$expand=IntegrationFlows&$filter=ResolvedConnection eq true&$inlinecount=allpages&$format=json`
       );
 
       console.log("[RESPONSE]", response);
 
       setInputError("");
     } catch (err) {
+      console.log(err);
       setInputError("Erro ao conectar SCPI");
     }
 
